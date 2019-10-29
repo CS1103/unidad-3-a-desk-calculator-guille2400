@@ -28,6 +28,14 @@ public:
     void set_input(std::istream* p){close(); ip = p; owns = true;}
 };
 
+Token_stream ts{std::cin};
+int no_of_errors;
+double error(const string& s)
+{
+    no_of_errors++;
+    cerr << "error: " << s << '\n';
+    return 1;
+}
 
 Token Token_stream::get() {
     char ch = 0;
@@ -78,6 +86,11 @@ const Token &Token_stream::current() {
     return ct;
 }
 
+double expr(bool get);
+
+double term(bool get);
+
+double prim(bool get);
 
 double expr(bool get) // add and subtract
 {
@@ -88,7 +101,7 @@ double expr(bool get) // add and subtract
                 left += term(true);
                 break;
             case Kind::minus:
-                left −= term(true);
+                left = left - term(true);
                 break;
             default:
                 return left;
@@ -96,13 +109,15 @@ double expr(bool get) // add and subtract
     }
 }
 
+
+
 double term(bool get) // multiply and divide
 {
     double left = prim(get);
     for (;;) {
         switch (ts.current().kind) {
             case Kind::mul:
-                left ∗= prim(true);
+                left = left * prim(true);
                 break;
             case Kind::div:
                 if (auto d = prim(true)) {
@@ -143,12 +158,6 @@ double prim(bool get) // handle primar ies
     }
 }
 
-int no_of_errors;
-double error(const string& s)
-{
-    no_of_errors++;
-    cerr << "error: " << s << '\n';
-    return 1;
-}
+
 
 #endif //INC_28_10_19_TOKEN_STREAM_H

@@ -5,7 +5,7 @@
 
 int main() {
     table["pi"] = 3.1415926535897932385;
-    table["e"] = 2.7182818284590452354; // inser t predefined names
+    table["e"] = 2.7182818284590452354; // insert predefined names
     calculate();
     return no_of_Errors;
     return 0;
